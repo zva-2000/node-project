@@ -1,0 +1,20 @@
+const express = require('express');
+
+const Contact = require('../models/contacts');
+const createPath = require('../helpers/create-path');
+
+const router = express.Router();
+
+router.get('/contacts', (req, res) => {
+	const title = 'Contacts';
+	Contact.find()
+		.then((result) => {
+			res.render(createPath('contacts'), { contacts: result, title });
+		})
+		.catch((err) => {
+			console.log(err);
+			res.render(createPath('error'), { title: 'Error' });
+		});
+});
+
+module.exports = router;
