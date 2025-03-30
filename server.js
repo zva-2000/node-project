@@ -7,6 +7,7 @@ const postRoutes = require('./routes/post-routes');
 const postApiRoutes = require('./routes/api-post-routes');
 const contactRoutes = require('./routes/contacts-routes');
 const createPath = require('./helpers/create-path');
+const serverV2 = require('./serverV2');
 
 const app = express();
 
