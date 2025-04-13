@@ -45,3 +45,21 @@ app.use((req, res) => {
 	const title = 'Error Page';
 	res.status(404).render(createPath('error'), { title });
 });
+
+// nums = [3, 2, 2, 3];
+
+// val = 3;
+
+// var removeElement = function (nums, val) {
+// 	const newArr = nums.filter((i) => i !== val);
+
+// 	nums.forEach((i) => {
+// 		if (i === val) {
+// 			i = _;
+// 		}
+// 	});
+
+// 	console.log(nums);
+// 	return newArr.length;
+// };
+// removeElement(nums, val);
