@@ -314,8 +314,110 @@ class Router {
 
 // 4. Как запустить дочерний процесс в Node.js и прочитать его вывод?
 
+// Пример
+
+// const child_process = require('child_process');
+
+// //Переход в директорию /srv/app
+// const cd = child_process.spawn('cd'['/srv/app']);
+
+// cd.on('error', (error) =>
+//     console.log('Cannot change dir: \n', error)
+// );
+
+// //Получение списка файлов и директорий для Linux
+// const ls = child_process.spawn('ls');
+
+// ls.stdout.on('data', (data) =>
+//     console.log('Files list: \n', data)
+// );
+// ls.stderr.on('error', (error) =>
+//     console.log('Error: \n', error)
+// );
+
 // 5. Реализуйте простой WebSocket-сервер (используя библиотеку ws).
+
+// const WebSocket = require('ws');
+// const wsServer = new WebSocket.Server({ port: 9000 });
+
+// wsServer.on('connection', onConnect);
+
+// function onConnect(wsClient) {
+//     console.log('Новый пользователь');
+//     wsClient.send('Привет');
+
+//     wsClient.on('close', function() {
+//         console.log('Пользователь отключился');
+//     });
+
+//     wsClient.on('message', function(message) {
+//         console.log(message);
+//         try {
+//             const jsonMessage = JSON.parse(message);
+//             switch (jsonMessage.action) {
+//                 case 'ECHO':
+//                     wsClient.send(jsonMessage.data);
+//                     break;
+//                 case 'PING':
+//                     setTimeout(function() {
+//                         wsClient.send('PONG');
+//                     }, 2000);
+//                     break;
+//                 default:
+//                     console.log('Неизвестная команда');
+//                     break;
+//             }
+//         } catch (error) {
+//             console.log('Ошибка', error);
+//         }
+//     });
+// }
+
+// console.log('Сервер запущен на 9000 порту');
+
 // 6. Как кэшировать данные из API в Redis (напишите пример)?
+
+// const { createClient } = require('redis');
+// const axios = require('axios');
+
+// const client = createClient();
+
+// client.on('error', (err) => console.log('Redis Client Error', err));
+
+// // Функция для получения данных из API
+// const fetchName = async (name) => {
+//     return (await axios.get(`https://api.agify.io/?name=${name}`)).data.age;
+// };
+
+// // Функция для получения значения из Redis
+// const get = async (name) => {
+//     return await client.get(name);
+// };
+
+// // Функция для сохранения значения в Redis
+// const save = (name, value) => {
+//     client.set(name, value);
+// };
+
+// // Основная асинхронная функция
+// async function main() {
+//     await client.connect();
+//     console.log('connected');
+//     const NAME = 'toto';
+
+//     const value = await get(NAME);
+
+//     if (!!value) {
+//         console.log('cached value: ', value);
+//     } else {
+//         const result = await fetchName(NAME);
+//         save(NAME, result);
+//         console.log('Fetched value: ', result);
+//     }
+// }
+
+// // Вызов основной функции
+// main().catch(console.error);
 
 // #### 4 вопроса повышенной сложности
 // 1. Как оптимизировать производительность Node.js при обработке 10k одновременных запросов?
