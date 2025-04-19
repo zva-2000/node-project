@@ -489,7 +489,103 @@ class Router {
 
 // 3. Как дебажить утечку памяти в Node.js (опишите шаги и инструменты)?
 
+// Для того чтобы справиться с проблемой, нужно заняться отладкой в продакшне.
+// То есть — мы позволим нашему серверу переполнить память во время его реального использования (по мере того, как он будет получать самые разные запросы к API).
+// А после того, как обнаружим подозрительный рост объёма выделяемой им памяти, займёмся отладкой.
+
+// Заметить утечку памяти можно, пользуясь инструментами мониторинга наподобие Express Status Monitor, Clinic, Prometheus. После этого мы вызываем API для создания дампа кучи. Этот дамп будет содержать все объекты, которые не смог удалить сборщик мусора.
+
+// Теперь нужно сранить дамп только что запущенного сервера и дамп нагруженного сервера, и так обнаружить утечку.
+
 // 4. Реализуйте JWT-аутентификацию для REST API (пример кода).
+
+// app.js
+// const express = require('express');
+// const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcryptjs');
+// require('dotenv').config();
+
+// const app = express();
+// app.use(express.json());
+
+// // --- 1) «База данных» в памяти (для примера) ---
+// const users = [
+//   {
+//     id: 1,
+//     email: 'alice@example.com',
+//     // сразу хешируем пароль «password123»
+//     passwordHash: bcrypt.hashSync('password123', 8)
+//   },
+//   {
+//     id: 2,
+//     email: 'bob@example.com',
+//     passwordHash: bcrypt.hashSync('qwerty', 8)
+//   }
+// ];
+
+// // --- 2) Функция для генерации JWT ---
+// function generateToken(user) {
+//   // payload содержит userId и email
+//   const payload = { userId: user.id, email: user.email };
+//   // подписываем токен секретом из .env, срок жизни тоже из .env
+//   return jwt.sign(
+//     payload,
+//     process.env.JWT_SECRET,
+//     { expiresIn: process.env.JWT_EXPIRES_IN }
+//   );
+// }
+
+// // --- 3) Middleware для защиты маршрутов ---
+// function authenticateJWT(req, res, next) {
+//   const authHeader = req.headers.authorization;
+//   // Если заголовка нет или он не начинается с «Bearer ...» — отказываем
+//   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//     return res.status(401).json({ error: 'Токен не передан' });
+//   }
+
+//   const token = authHeader.split(' ')[1];
+//   try {
+//     // Проверяем подпись и срок жизни
+//     const payload = jwt.verify(token, process.env.JWT_SECRET);
+//     // Записываем в req.user – дальше в контроллерах его можно читать
+//     req.user = payload;
+//     next();
+//   } catch (err) {
+//     // Если подпись не совпала или токен «протух»
+//     return res.status(401).json({ error: 'Неверный или просроченный токен' });
+//   }
+// }
+
+// // --- 4) Маршрут логина: выдаём токен ---
+// app.post('/login', (req, res) => {
+//   const { email, password } = req.body;
+//   // Ищем пользователя по email
+//   const user = users.find(u => u.email === email);
+
+//   // Проверяем есть ли пользователь и совпадает ли пароль
+//   if (!user || !bcrypt.compareSync(password, user.passwordHash)) {
+//     return res.status(401).json({ error: 'Неправильные данные' });
+//   }
+
+//   // Всё ок — генерируем токен и отсылаем клиенту
+//   const token = generateToken(user);
+//   res.json({ token });
+// });
+
+// // --- 5) Защищённый маршрут: только с валидным токеном ---
+// app.get('/profile', authenticateJWT, (req, res) => {
+//   // Мы знаем, кто пользователь: req.user.userId, req.user.email
+//   res.json({
+//     message: 'Добро пожаловать в профиль!',
+//     user: req.user
+//   });
+// });
+
+// // --- 6) Запуск сервера ---
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//   console.log(`Сервер работает на http://localhost:${PORT}`);
+// });
 
 // #### 3 экспертных вопроса
 // 1. Как создать кастомный Event Emitter с поддержкой асинхронных подписчиков?
