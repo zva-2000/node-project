@@ -108,6 +108,7 @@ fs;
 //Взаимодействие с операционной системой
 
 const os = require('os');
+// const { Promise } = require('mongoose');
 
 // console.log(os.platform());
 // console.log(os.arch());
@@ -589,5 +590,52 @@ class Router {
 
 // #### 3 экспертных вопроса
 // 1. Как создать кастомный Event Emitter с поддержкой асинхронных подписчиков?
+
+// class EventEmitter {
+// 	#listners = {
+// 		// [eventName]: (callback, callback),
+// 	};
+
+// 	#getCallbackFor(eventName) {
+// 		return this.#listners[eventName] ?? [];
+// 	}
+
+// 	#setCallbackFor(eventName, listeners) {
+// 		if (listeners.length === 0) {
+// 			delete this.#listners(eventName);
+// 		} else {
+// 			this.#listners[eventName] = listeners;
+// 		}
+// 	}
+// 	subscribe(eventName, callback) {
+// 		const subs = this.#getCallbackFor(eventName);
+
+// 		subs.push(callback);
+
+// 		this.#setCallbackFor(eventName, subs);
+
+// 		return () => this.unsubscribe(eventName, callback);
+// 	}
+
+// 	unsubscribe(eventName, callback) {
+// 		const subs = this.#getCallbackFor(eventName).filter((item) => item !== callback);
+
+// 		this.#setCallbackFor(eventName, subs);
+// 	}
+
+// 	dispatch(eventName, data) {
+// 		const subs = this.#getCallbackFor(eventName).forEach((callback) => {
+// 			callback(data);
+// 		});
+// 	}
+// 	async asyncDispatch(eventName, data) {
+// 		const promises = this.#getCallbackFor(eventName).map((callback) => callback(data));
+// 		await Promise.all(promises);
+// 	}
+// }
+
+// const event = new EventEmitter();
+
 // 2. Напишите middleware для Express, который модифицирует тело запроса и ответа.
+
 // 3. Реализуйте потоковый API, который преобразует данные CSV в JSON на лету (с использованием потоков).
